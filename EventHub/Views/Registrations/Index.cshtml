@@ -1,0 +1,45 @@
+@model List<EventHub.Models.Registration>
+@{ ViewBag.Title = "My registrations"; }
+
+<h1>My registrations</h1>
+<form method="get" class="filters">
+    <input type="email" name="email" value="@ViewBag.Email" placeholder="Email you registered with" required />
+    <button type="submit">Find my registrations</button>
+</form>
+
+@if (TempData["Msg"] != null) { <p class="notice">@TempData["Msg"]</p> }
+
+@if (Model == null)
+{
+    <p class="empty">Enter the email you used while registering to see your events.</p>
+}
+else if (!Model.Any())
+{
+    <p class="empty">No registrations found for this email. Check the spelling or browse events.</p>
+}
+else
+{
+    <table class="tbl">
+        <tr><th>Code</th><th>Event</th><th>Date</th><th>Status</th><th></th></tr>
+        @foreach (var r in Model)
+        {
+            var ev = EventHub.Data.DataStore.GetEvent(r.EventId);
+            <tr>
+                <td>@r.Code</td>
+                <td><a href="@Url.Action("Details", "Events", new { id = ev.Id })">@ev.Title</a><br /><small>@ev.University.ShortName</small></td>
+                <td>@ev.StartDate.ToString("dd MMM yyyy")</td>
+                <td>@r.Status</td>
+                <td>
+                    @if (r.Status == "Confirmed")
+                    {
+                        <form asp-action="Cancel" asp-controller="Registrations" method="post">
+                            <input type="hidden" name="code" value="@r.Code" />
+                            <input type="hidden" name="email" value="@r.Email" />
+                            <button type="submit" class="btn ghost small-btn">Cancel registration</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+}

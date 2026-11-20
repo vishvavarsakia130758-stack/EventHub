@@ -1,0 +1,32 @@
+@model EventHub.Models.SignupViewModel
+@{ ViewBag.Title = "Sign up"; }
+
+<div class="auth">
+    <h1>Create your account</h1>
+    <p class="uni">One account to discover and join university events across India.</p>
+
+    <form asp-action="Signup" asp-controller="Account" method="post" class="form">
+        <input asp-for="ReturnUrl" type="hidden" />
+        <div asp-validation-summary="ModelOnly" class="err"></div>
+
+        <label asp-for="FullName">Full name</label>
+        <input asp-for="FullName" autocomplete="name" />
+        <span asp-validation-for="FullName" class="err"></span>
+
+        <label asp-for="Email">Email</label>
+        <input asp-for="Email" type="email" autocomplete="email" />
+        <span asp-validation-for="Email" class="err"></span>
+
+        <label asp-for="Password">Password</label>
+        <input asp-for="Password" type="password" autocomplete="new-password" placeholder="At least 6 characters" />
+        <span asp-validation-for="Password" class="err"></span>
+
+        <label asp-for="ConfirmPassword">Confirm password</label>
+        <input asp-for="ConfirmPassword" type="password" autocomplete="new-password" />
+        <span asp-validation-for="ConfirmPassword" class="err"></span>
+
+        <button type="submit" class="btn">Sign up</button>
+    </form>
+
+    <p class="auth-alt">Already have an account? <a href="@Url.Action("Login", "Account", new { returnUrl = Model.ReturnUrl })">Log in</a></p>
+</div>

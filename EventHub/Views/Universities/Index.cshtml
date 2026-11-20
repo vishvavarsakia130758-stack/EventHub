@@ -1,0 +1,37 @@
+@model List<EventHub.Models.University>
+@{ ViewBag.Title = "Universities"; }
+
+<h1>Universities</h1>
+<form method="get" class="filters">
+    <input type="text" name="q" value="@ViewBag.Q" placeholder="Search name or city" />
+    <select name="state">
+        <option value="">All states</option>
+        @foreach (string s in ViewBag.States) { <option value="@s" selected="@((string)ViewBag.State == s)">@s</option> }
+    </select>
+    <select name="type">
+        <option value="">All types</option>
+        @foreach (string t in ViewBag.Types) { <option value="@t" selected="@((string)ViewBag.Type == t)">@t</option> }
+    </select>
+    <button type="submit">Apply filters</button>
+    <a href="@Url.Action("Index")" class="clear">Clear</a>
+</form>
+
+@if (!Model.Any())
+{
+    <p class="empty">No universities match. Clear a filter to see all.</p>
+}
+else
+{
+    <div class="grid">
+        @foreach (var u in Model)
+        {
+            <article class="card">
+                <div class="tags"><span class="tag mute">@u.Type</span></div>
+                <h3><a href="@Url.Action("Details", new { id = u.Id })">@u.Name</a></h3>
+                <p class="uni">@u.City, @u.State</p>
+                <p class="meta">Established @u.Established</p>
+                <p class="meta">@EventHub.Data.DataStore.Events.Count(e => e.UniversityId == u.Id) events listed</p>
+            </article>
+        }
+    </div>
+}

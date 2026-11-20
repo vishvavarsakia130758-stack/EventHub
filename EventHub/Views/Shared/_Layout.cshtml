@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewBag.Title - CampusPass</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+    <link href="~/Content/eventhub.css" rel="stylesheet" />
+</head>
+<body>
+    <header class="bar">
+        <div class="wrap bar-in">
+            <a class="brand" href="@Url.Action("Index", "Home")">CampusPass</a>
+            <nav>
+                <a href="@Url.Action("Index", "Events")">Events</a>
+                <a href="@Url.Action("Index", "Universities")">Universities</a>
+                <a class="pill" href="@Url.Action("Index", "Registrations")">My registrations</a>
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <span class="hello">Hi, @User.Identity.Name</span>
+                    <form asp-action="Logout" asp-controller="Account" method="post" class="nav-form">
+                        <button type="submit" class="nav-link-btn">Log out</button>
+                    </form>
+                }
+                else
+                {
+                    <a href="@Url.Action("Login", "Account")">Log in</a>
+                    <a class="pill alt" href="@Url.Action("Signup", "Account")">Sign up</a>
+                }
+            </nav>
+        </div>
+    </header>
+
+    <main class="wrap">
+        @RenderBody()
+    </main>
+
+    <footer class="foot">
+        <div class="wrap">CampusPass: one place to find and join university events across India. Sample data for a college project.</div>
+    </footer>
+</body>
+</html>

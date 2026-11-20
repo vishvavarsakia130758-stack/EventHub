@@ -1,0 +1,40 @@
+@model EventHub.Models.Registration
+@{
+    ViewBag.Title = "Register";
+    var ev = (EventHub.Models.Event)ViewBag.Event;
+}
+
+<a class="back" href="@Url.Action("Details", new { id = ev.Id })">Back to event</a>
+<h1>Register for @ev.Title</h1>
+<p class="uni">@ev.University.ShortName | @ev.StartDate.ToString("dd MMM yyyy") | @(ev.Fee == 0 ? "Free" : "Rs. " + ev.Fee.ToString("N0")) | @ev.SeatsLeft seats left</p>
+
+<form asp-action="Register" asp-controller="Events" method="post" class="form">
+    <input asp-for="EventId" type="hidden" />
+    <div asp-validation-summary="ModelOnly" class="err"></div>
+
+    <label>Full name</label>
+    <input asp-for="FullName" />
+    <span asp-validation-for="FullName" class="err"></span>
+
+    <label>Email</label>
+    <input asp-for="Email" type="email" />
+    <span asp-validation-for="Email" class="err"></span>
+
+    <label>Mobile number</label>
+    <input asp-for="Phone" placeholder="10-digit number" />
+    <span asp-validation-for="Phone" class="err"></span>
+
+    <label>College / university</label>
+    <input asp-for="College" />
+    <span asp-validation-for="College" class="err"></span>
+
+    <label>Course</label>
+    <input asp-for="Course" placeholder="e.g. B.Tech CSE" />
+    <span asp-validation-for="Course" class="err"></span>
+
+    <label>Year of study</label>
+    <select asp-for="Year" asp-items="@(new SelectList(new[] { 1, 2, 3, 4, 5, 6 }))"></select>
+    <span asp-validation-for="Year" class="err"></span>
+
+    <button type="submit" class="btn">Confirm registration</button>
+</form>

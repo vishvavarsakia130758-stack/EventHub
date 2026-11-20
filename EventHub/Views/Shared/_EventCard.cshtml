@@ -1,0 +1,21 @@
+@model EventHub.Models.Event
+<article class="card">
+    <div class="tags">
+        <span class="tag t-@Model.Category.ToLower()">@Model.Category</span>
+        <span class="tag mute">@Model.Mode</span>
+    </div>
+    <h3><a href="@Url.Action("Details", "Events", new { id = Model.Id })">@Model.Title</a></h3>
+    <p class="uni">@Model.University.ShortName, @Model.University.City, @Model.University.State</p>
+    <p class="meta">@Model.StartDate.ToString("dd MMM yyyy")@(Model.EndDate.Date != Model.StartDate.Date ? " to " + Model.EndDate.ToString("dd MMM yyyy") : "")</p>
+    <div class="card-foot">
+        <span class="fee">@(Model.Fee == 0 ? "Free" : "Rs. " + Model.Fee.ToString("N0"))</span>
+        @if (Model.IsClosed)
+        {
+            <span class="closed">@(Model.SeatsLeft == 0 ? "Full" : "Registration closed")</span>
+        }
+        else
+        {
+            <span class="seats">@Model.SeatsLeft seats left</span>
+        }
+    </div>
+</article>

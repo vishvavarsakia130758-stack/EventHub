@@ -1,0 +1,46 @@
+@model EventHub.Models.Event
+@{ ViewBag.Title = Model.Title; }
+
+<a class="back" href="@Url.Action("Index")">Back to events</a>
+<div class="detail">
+    <div class="detail-main">
+        <div class="tags"><span class="tag t-@Model.Category.ToLower()">@Model.Category</span><span class="tag mute">@Model.Mode</span></div>
+        <h1>@Model.Title</h1>
+        <p class="uni">Hosted by <a href="@Url.Action("Details", "Universities", new { id = Model.UniversityId })">@Model.University.Name</a>, @Model.University.City, @Model.University.State</p>
+
+        <h2>About this event</h2>
+        <p>@Model.Description</p>
+
+        <h2>Who can join</h2>
+        <p>@Model.Eligibility</p>
+
+        <h2>Prizes and benefits</h2>
+        <p>@Model.Prizes</p>
+
+        <h2>Schedule</h2>
+        <ol class="timeline">
+            @foreach (var item in Model.ScheduleItems) { <li>@item</li> }
+        </ol>
+
+        <h2>Contact</h2>
+        <p><a href="mailto:@Model.ContactEmail">@Model.ContactEmail</a></p>
+    </div>
+
+    <aside class="detail-side">
+        <dl>
+            <dt>Date</dt><dd>@Model.StartDate.ToString("dd MMM yyyy")@(Model.EndDate.Date != Model.StartDate.Date ? " to " + Model.EndDate.ToString("dd MMM yyyy") : "")</dd>
+            <dt>Venue</dt><dd>@Model.Venue</dd>
+            <dt>Fee</dt><dd>@(Model.Fee == 0 ? "Free" : "Rs. " + Model.Fee.ToString("N0"))</dd>
+            <dt>Register by</dt><dd>@Model.RegistrationDeadline.ToString("dd MMM yyyy")</dd>
+            <dt>Seats left</dt><dd>@Model.SeatsLeft of @Model.Capacity</dd>
+        </dl>
+        @if (Model.IsClosed)
+        {
+            <p class="closed">@(Model.SeatsLeft == 0 ? "This event is full." : "Registration has closed.")</p>
+        }
+        else
+        {
+            <a class="btn" href="@Url.Action("Register", new { id = Model.Id })">Register for this event</a>
+        }
+    </aside>
+</div>

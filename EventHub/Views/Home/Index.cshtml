@@ -1,0 +1,35 @@
+@model List<EventHub.Models.Event>
+@{ ViewBag.Title = "Find university events across India"; }
+
+<section class="hero">
+    <h1>Every university event in India, one place to join</h1>
+    <p>Hackathons, fests, workshops and tournaments from IITs, central, state and private universities. Pick an event, read every detail, register in a minute.</p>
+    <form class="search" method="get" action="@Url.Action("Index", "Events")">
+        <input type="text" name="q" placeholder="Search events or universities" />
+        <button type="submit">Search events</button>
+    </form>
+    <ul class="stats">
+        <li><b>@ViewBag.EventCount</b> events</li>
+        <li><b>@ViewBag.UniversityCount</b> universities</li>
+        <li><b>@ViewBag.StateCount</b> states and UTs</li>
+    </ul>
+</section>
+
+<section>
+    <div class="sec-head"><h2>Happening soon</h2><a href="@Url.Action("Index", "Events")">See all events</a></div>
+    <div class="grid">
+        @foreach (var e in Model) { <partial name="_EventCard" model="e" /> }
+    </div>
+</section>
+
+<section>
+    <div class="sec-head"><h2>Universities hosting events</h2><a href="@Url.Action("Index", "Universities")">Browse all universities</a></div>
+    <div class="grid small">
+        @foreach (EventHub.Models.University u in ViewBag.Universities)
+        {
+            <a class="uni-tile" href="@Url.Action("Details", "Universities", new { id = u.Id })">
+                <b>@u.ShortName</b><span>@u.City, @u.State</span>
+            </a>
+        }
+    </div>
+</section>

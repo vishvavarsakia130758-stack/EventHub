@@ -1,0 +1,22 @@
+@model EventHub.Models.University
+@{
+    ViewBag.Title = Model.Name;
+    var events = (List<EventHub.Models.Event>)ViewBag.Events;
+}
+<a class="back" href="@Url.Action("Index")">Back to universities</a>
+<h1>@Model.Name</h1>
+<p class="uni">@Model.City, @Model.State | @Model.Type | Established @Model.Established</p>
+<p>@Model.Description</p>
+<p><a href="@Model.Website" target="_blank" rel="noopener">Visit official website</a></p>
+
+<h2>Events at @Model.ShortName</h2>
+@if (!events.Any())
+{
+    <p class="empty">No events listed yet. Check back soon.</p>
+}
+else
+{
+    <div class="grid">
+        @foreach (var e in events) { <partial name="_EventCard" model="e" /> }
+    </div>
+}

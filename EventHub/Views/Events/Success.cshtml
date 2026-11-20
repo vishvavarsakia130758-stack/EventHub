@@ -1,0 +1,19 @@
+@model EventHub.Models.Registration
+@{
+    ViewBag.Title = "You're registered";
+    var ev = (EventHub.Models.Event)ViewBag.Event;
+}
+<div class="success">
+    <h1>You're registered, @Model.FullName</h1>
+    <p>Keep this code. You will need it at check-in.</p>
+    <div class="code">@Model.Code</div>
+    <dl>
+        <dt>Event</dt><dd>@ev.Title</dd>
+        <dt>University</dt><dd>@ev.University.Name</dd>
+        <dt>Date</dt><dd>@ev.StartDate.ToString("dd MMM yyyy")</dd>
+        <dt>Venue</dt><dd>@ev.Venue</dd>
+        <dt>Fee to pay</dt><dd>@(ev.Fee == 0 ? "Nothing, this event is free" : "Rs. " + ev.Fee.ToString("N0") + " (paid at the venue)")</dd>
+    </dl>
+    <a class="btn" href="@Url.Action("Index", "Registrations", new { email = Model.Email })">View my registrations</a>
+    <a class="btn ghost" href="@Url.Action("Index", "Events")">Find more events</a>
+</div>

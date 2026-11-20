@@ -1,0 +1,38 @@
+@model List<EventHub.Models.Event>
+@{ ViewBag.Title = "Events"; }
+
+<h1>Events</h1>
+<form method="get" class="filters">
+    <input type="text" name="q" value="@ViewBag.Q" placeholder="Search title, university or topic" />
+    <select name="category">
+        <option value="">All categories</option>
+        @foreach (string c in ViewBag.Categories) { <option value="@c" selected="@((string)ViewBag.Category == c)">@c</option> }
+    </select>
+    <select name="state">
+        <option value="">All states</option>
+        @foreach (string s in ViewBag.States) { <option value="@s" selected="@((string)ViewBag.State == s)">@s</option> }
+    </select>
+    <select name="mode">
+        <option value="">Any mode</option>
+        @foreach (var m in new[] { "Online", "Offline", "Hybrid" }) { <option value="@m" selected="@((string)ViewBag.Mode == m)">@m</option> }
+    </select>
+    <select name="sort">
+        <option value="">Soonest first</option>
+        <option value="fee" selected="@((string)ViewBag.Sort == "fee")">Lowest fee</option>
+        <option value="seats" selected="@((string)ViewBag.Sort == "seats")">Most seats left</option>
+    </select>
+    <button type="submit">Apply filters</button>
+    <a href="@Url.Action("Index")" class="clear">Clear</a>
+</form>
+
+@if (!Model.Any())
+{
+    <p class="empty">No events match these filters. Clear a filter or try another state.</p>
+}
+else
+{
+    <p class="count">@Model.Count events found</p>
+    <div class="grid">
+        @foreach (var e in Model) { <partial name="_EventCard" model="e" /> }
+    </div>
+}

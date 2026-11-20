@@ -1,0 +1,26 @@
+@model EventHub.Models.LoginViewModel
+@{ ViewBag.Title = "Log in"; }
+
+<div class="auth">
+    <h1>Welcome back</h1>
+    <p class="uni">Log in to register for events faster and track your registrations.</p>
+
+    <form asp-action="Login" asp-controller="Account" method="post" class="form">
+        <input asp-for="ReturnUrl" type="hidden" />
+        <div asp-validation-summary="ModelOnly" class="err"></div>
+
+        <label asp-for="Email">Email</label>
+        <input asp-for="Email" type="email" autocomplete="email" />
+        <span asp-validation-for="Email" class="err"></span>
+
+        <label asp-for="Password">Password</label>
+        <input asp-for="Password" type="password" autocomplete="current-password" />
+        <span asp-validation-for="Password" class="err"></span>
+
+        <label class="check"><input asp-for="RememberMe" type="checkbox" /> Keep me logged in</label>
+
+        <button type="submit" class="btn">Log in</button>
+    </form>
+
+    <p class="auth-alt">New to CampusPass? <a href="@Url.Action("Signup", "Account", new { returnUrl = Model.ReturnUrl })">Create an account</a></p>
+</div>
